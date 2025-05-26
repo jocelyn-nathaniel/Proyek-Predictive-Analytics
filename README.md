@@ -154,4 +154,4 @@ Selanjutnya, akan dilakukan pengujian dalam membuat prediksi dengan menggunakan 
 
 ![image](https://github.com/user-attachments/assets/cb0b4cf5-2ec3-4732-a725-70e0d638a802)
 
-Berdasarkan pengujian di atas, didapatkan hasil bahwa model KNN memberikan hasil yang paling mendekati dengan y_true. 
+Berdasarkan pengujian di atas, didapatkan hasil bahwa model KNN memberikan hasil yang paling mendekati dengan y_true. Maka dari itu, model yang paling direkomendasikan untuk digunakan pada saat memprediksi harga perumahan di Urecht adalah model KNN. 
