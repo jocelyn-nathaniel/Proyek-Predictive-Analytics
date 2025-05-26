@@ -104,7 +104,11 @@ Dengan keterangan:
 -	N = jumlah dataset 
 -	yi = nilai sebenarnya atau aktual
 -	y_pred = nilai prediksi 
-Sebelum menghitung nilai MSE dalam model yang telah dibuat, hal yang harus dilakukan adalah melakukan scaling fitur numerik pada data uji untuk menghindari kebocoran data dengan tiga model algoritma yang telah selesai dilatih supaya skala antara data latih dan data uji menjadi sama sehingga dapat dilakukan evaluasi. Setelah melakukan scaling fitur numerik maka akan melakukan evaluasi untuk ketiga model algoritma yang telah dilatih dengan menghitung nilai MSE pada data train dan test di mana akan dibagi dengan 1e6 supaya nilai mse berada dalam skala yang tidak terlalu besar. Hasil evaluasi pada data latih dan data test adalah sebagai berikut:
+Sebelum menghitung nilai MSE dalam model yang telah dibuat, hal yang harus dilakukan adalah melakukan scaling fitur numerik pada data uji untuk menghindari kebocoran data dengan tiga model algoritma yang telah selesai dilatih supaya skala antara data latih dan data uji menjadi sama sehingga dapat dilakukan evaluasi. Setelah melakukan scaling fitur numerik maka akan melakukan evaluasi untuk ketiga model algoritma yang telah dilatih dengan menghitung nilai MSE pada data train dan test di mana akan dibagi dengan 1e6 supaya nilai mse berada dalam skala yang tidak terlalu besar sebagai berikut:
+
+![image](https://github.com/user-attachments/assets/426c527f-43f0-4e24-9ef6-54a5447f42dd)
+
+Hasil evaluasi pada data latih dan data test adalah sebagai berikut:
 
 ![image](https://github.com/user-attachments/assets/87b47291-d7ca-4110-b3b2-1e6fc405d2e6)
 
