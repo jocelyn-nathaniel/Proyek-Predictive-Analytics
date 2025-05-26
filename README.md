@@ -49,6 +49,7 @@ Berikut merupakan tautan dataset yang diunduh dari Kaggle: Utrecht housing datas
 
 ## Data Preparation
 Sebelum membangun model prediksi, diperlukan beberapa tahap penting pada data preparation dengan melakukan transformasi pada data untuk memastikan bahwa data yang digunakan bersih, konsisten, dan dalam bentuk yang sudah sesuai  atau cocok untuk proses pemodelan machine learning. Ada beberapa tahapan yang umum dilakukan pada data preparation seperti seleksi fitur, transformasi data, feature engineering, dan dimensionality reduction. Pada bagian ini, yang akan dilakukan adalah pembagian dataset dengan fungsi train_test_split dari library sklearn. Membagi data menjadi data latih (train) dan data uji (test) merupakan suatu hal yang harus dilakukan sebelum membuat pemodelan di mana perlu mempertahankan sebagian data yang ada untuk menguji seberapa baik generalisasi model terhadap data baru. Data uji (test set) berperan sebagai data baru sehingga perlu melakukan seluruh proses transformasi dalam data latih supaya tidak mengotori data uji dengan informasi yang didapat dari data latih. Maka dari itu, langkah awal adalah membagi dataset sebelum melakukan transformasi apa pun. Proporsi pembagian data latih dan data uji yang akan digunakan pada proyek ini adalah 80:20. Hasil dari pembagian data latih dan data uji menunjukkan bahwa dari 1961 total jumlah sampel, akan diambil sebanyak 1568 untuk data latih dan sebanyak 393 untuk data uji. Selanjutnya untuk standarisasi, algoritma machine learning memiliki performa yang lebih baik dan konvergen lebih cepat ketika dimodelkan pada data dengan skala relative sama atau mendekati distribusi normal, sehingga proses standarisasi membantu untuk membuat fitur data menjadi bentuk yang lebih mudah untuk diolah oleh algoritma. Standarisasi adalah teknik transformasi yang paling umum digunakan sebagai tahap persiapan dalam pemodelan. Untuk fitur numerik, akan menggunakan teknik StandardScaler dari library Scikitlearn di mana akan melakukan proses standarisasi fitur dengan mengurangi mean (nilai rata-rata) kemudian membaginya dengan standar deviasi untuk menggeser distribusi sehingga akan menghasilkan distribusi dengan standar deviasi sama dengan 1 dan mean sama dengan 0. Standarisasi hanya akan dilakukan pada data latih lalu ketika sudah berada di tahap evaluasi baru akan dilakukan juga dengan data uji. Setelah dilakukan standarisasi, dapat terlihat bahwa nilai mean sudah = 0 dan standar deviasi = 1. 
+
 ![image](https://github.com/user-attachments/assets/7f876d43-7370-4eb7-a96a-ee787ef68f99)
 
 ## Modeling
@@ -87,22 +88,32 @@ Pada proyek ini, tiga algoritma regresi yang akan digunakan dan dibandingkan unt
 -	Lebih memakan waktu saat pelatihan dibandingkan dengan algoritma RF. 
 -	Sangat sensitive terhadap parameter dan dapat overfitting jika tidak dikontrol. 
 -	Intepretasi yang dilakukan lebih sulit dibandingkan dengan model pohon Tunggal. 
-Setelah ketiga model pada tahap pemodelan dievaluasi menggunakan data uji dengan metrik MSE, hasil yang didapat adalah sebagai berikut: 
+Setelah ketiga model pada tahap pemodelan dievaluasi menggunakan data uji dengan metrik MSE, hasil yang didapat adalah sebagai berikut:
+
 ![image](https://github.com/user-attachments/assets/a6154d7d-5a25-423c-a42e-cd60236cf182)
+
 Berdasarkan hasil evaluasi di atas, didapatkan bahwa KNN dipilih sebagai model terbaik karena model KNN menampilkan nilai error terkecil pada data uji dengan sebesar 478.08 dibandingkan kedua algoritma lainnya. 
 
 ## Evaluation
 Metrik evaluasi yang dilakukan pada tahapan ini adalah MSE (Mean Squared Error) yang menghitung jumlah selisih kuadrat rata-rata nilai sebenarnya dengan nilai prediksi karena proyek ini ingin memprediksi harga perumahan yang mana harga merupakan variabel kontinu sehingga menggunakan metrik untuk kasus regresi. MSE didefinisikan dengan persamaan berikut:
+
 ![image](https://github.com/user-attachments/assets/a2d74bcc-e550-4212-ab51-870918cdf473)
+
 Dengan keterangan: 
 -	N = jumlah dataset 
 -	yi = nilai sebenarnya atau aktual
 -	y_pred = nilai prediksi 
-Sebelum menghitung nilai MSE dalam model yang telah dibuat, hal yang harus dilakukan adalah melakukan scaling fitur numerik pada data uji untuk menghindari kebocoran data dengan tiga model algoritma yang telah selesai dilatih supaya skala antara data latih dan data uji menjadi sama sehingga dapat dilakukan evaluasi. Setelah melakukan scaling fitur numerik maka akan melakukan evaluasi untuk ketiga model algoritma yang telah dilatih dengan menghitung nilai MSE pada data train dan test di mana akan dibagi dengan 1e6 supaya nilai mse berada dalam skala yang tidak terlalu besar. Hasil evaluasi pada data latih dan data test adalah sebagai berikut: 
+Sebelum menghitung nilai MSE dalam model yang telah dibuat, hal yang harus dilakukan adalah melakukan scaling fitur numerik pada data uji untuk menghindari kebocoran data dengan tiga model algoritma yang telah selesai dilatih supaya skala antara data latih dan data uji menjadi sama sehingga dapat dilakukan evaluasi. Setelah melakukan scaling fitur numerik maka akan melakukan evaluasi untuk ketiga model algoritma yang telah dilatih dengan menghitung nilai MSE pada data train dan test di mana akan dibagi dengan 1e6 supaya nilai mse berada dalam skala yang tidak terlalu besar. Hasil evaluasi pada data latih dan data test adalah sebagai berikut:
+
 ![image](https://github.com/user-attachments/assets/87b47291-d7ca-4110-b3b2-1e6fc405d2e6)
+
 Untuk hasil plot metrik menggunakan bar chart adalah sebagai berikut: 
+
 ![image](https://github.com/user-attachments/assets/5bb633a3-665d-4b70-ab35-f169b3e29e48)
+
 Berdasarkan bar plot di atas, dapat terlihat bahwa model KNN memberikan nilai error yang terkecil dibandingkan kedua model lainnya dengan model algoritma Boosting memberikan nilai error terbesar dengan di atas 1800 sedangkan untuk model RF memberikan nilai error yang tidak begitu besar dan tidak begitu kecil sehingga model KNN yang akan dipilih untuk memprediksi harga perumahan Utrecht. 
 Selanjutnya, akan dilakukan pengujian dalam membuat prediksi dengan menggunakan beberapa harga dari data test yang hasilnya adalah sebagai berikut: 
+
 ![image](https://github.com/user-attachments/assets/cb0b4cf5-2ec3-4732-a725-70e0d638a802)
+
 Berdasarkan pengujian di atas, didapatkan hasil bahwa model KNN memberikan hasil yang paling mendekati dengan y_true. 
