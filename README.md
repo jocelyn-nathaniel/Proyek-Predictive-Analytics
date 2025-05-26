@@ -61,13 +61,13 @@ Pada proyek ini, tiga algoritma regresi yang akan digunakan dan dibandingkan unt
    - KNN menggunakan kesamaan fitur untuk memprediksi nilai dari setiap data baru di mana setiap data baru diberi nilai berdasarkan seberapa mirip titik tersebut dalam set pelatihan. KNN bekerja dengan membandingkan jarak satu sampel ke sampel pelatihan lain dengan memilih sejumlah k tetangga terdekat dengan k adalah sebuah angka positif. Pemilihan nilai k sangat penting dan berpengaruh terhadap performa model karena jika k yang digunakan terlalu rendah maka akan menghasilkan model yang overfit dan hasil prediksi memiliki varians tinggi sedangkan jika k terlalu tinggi maka model yang dihasilkan akan underfit dan prediksinya memiliki bias tinggi.
    - Parameter yang digunakan adalah n_neighbors = 5 sebagai jumlah tetangga terdekat yang digunakan untuk prediksi dan metric Euclidean untuk mengukur jarak antara titik. Pada bagian ini, hanya akan melatih data latih dan menyimpan data uji untuk di tahap evaluasi. 
 
-# Kelebihan:
+Kelebihan:
 
 - Mudah dipahami dan digunakan.
 - Tidak memerlukan pelatihan model.
 - Bekerja dengan baik pada data dengan fitur yang relatif sedikit.
   
-# Kekurangan: 
+Kekurangan: 
 
 - Sensitif terhadap fitur yang tidak distandarisasi.
 - Tidak memberikan interpretabilitas fitur.
@@ -78,13 +78,13 @@ Pada proyek ini, tiga algoritma regresi yang akan digunakan dan dibandingkan unt
    - RF adalah model machine learning yang termasuk ke dalam kategori ensemble (group) learning di mana terdiri dari beberapa model dan bekerja secara bersama-sama. Ide dibalik model ensemble adalah sekelompok model yang bekerja bersama menyelesaikan masalah sehingga tingkat keberhasilan menjadi lebih tinggi dibandingkan yang bekerja sendiri di mana setiap model harus membuat prediksi secara independen kemudian prediksi dari setiap model digabungkan untuk membuat prediksi akhir. Algoritma RF disusun dari banyak algoritma pohon (decision tree) yang pembagian data dan fitur dilakukan secara acak.
    - Parameter yang digunakan adalah n_estimators = 100 yang merupakan jumlah trees (pohon) di forest. Lalu, ada max_depth = 5 yang merupakan kedalaman atau panjang pohon di mana merupakan ukuran seberapa banyak pohon dapat membelah (splitting) untuk membagi setiap mode ke dalam jumlah pengamatan yang diinginkan. Selanjutnya, terdapat random_state = 42 di mana digunakan untuk mengontrol random number generator yang digunakan. Terakhir, terdapat n_jobs = -1 yang merupakan jumlah job (pekerjaan) yang digunakan secara pararel di mana merupakan komponen yang digunakan untuk mengontrol thread atau proses yang berjalan secara pararel.
      
-# Kelebihan: 
+Kelebihan: 
 
 -	Tangguh terhadap overfitting karena terdiri dari ensemble dari banyak pohon. 
 -	Dapat menangani variabel numerik maupun kategorikal walaupun diproyek ini seluruh fitur merupakan variabel numerik. 
 -	Memberikan informasi yang penting untuk melakukan intepretasi pada variabel.
   
-# Kekurangan: 
+Kekurangan: 
 
 -	Intepretasi pada RF lebih kompleks dibandingkan decision tree secara sendiri. 
 -	Memerlukan waktu untuk melakukan komputasi yang lebih besar daripada model sedehana seperti KNN. 
@@ -94,13 +94,13 @@ Pada proyek ini, tiga algoritma regresi yang akan digunakan dan dibandingkan unt
    - Boosting adalah algoritma yang melatih model secara berurutan atau dalam proses yang iterative di mana algoritma  yang menggunakan teknik boosting bekerja dengan membangun model dari data latih kemudian membuat model kedua yang bertugas untuk memperbaiki kesalahan dari model pertama sampai data latih terprediksi dengan baik atau telah mencapai jumlah maksimum model untuk ditambahkan. Algoritma boosting digunakan untuk meningkatkan performa atau akurasi prediksi dengan menggabungkan beberapa model sederhana dan dianggap lemah (weak learners) sehingga membentuk model yang kuat (strong ensemble learner). Pada tahapan ini, metode algoritma boosting yang akan digunakan adalah adaptive boosting, salah satunya adalah AdaBoost.
    - Parameter yang digunakan adalah learning_rate = 0.05 yang merupakan bobot yang diterapkan pada setiap regressor di masing-masing proses iterasi boosting. Lalu, terdapat random_state = 42 yang merupakan pengontrolan random number generator yang digunakan.
      
-# Kelebihan: 
+Kelebihan: 
 
 -	Sangat powerful dalam meningkatkan akurasi prediksi, sering digunakan oleh para pemenang kompetisi. 
 -	Dapat menangkap pola kompleks yang non-linear. 
 -	Dapat ditune secara mendalam untuk mendapatkan performa yang optimal.
   
-#	Kekurangan: 
+Kekurangan: 
 
 -	Lebih memakan waktu saat pelatihan dibandingkan dengan algoritma RF. 
 -	Sangat sensitif terhadap parameter dan dapat overfitting jika tidak dikontrol. 
