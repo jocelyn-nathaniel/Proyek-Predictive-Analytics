@@ -50,11 +50,59 @@ Berikut merupakan tautan dataset yang diunduh dari Kaggle: [Utrecht housing data
 - monument: merupakan nilai monumental di mana beberapa rumah di Utrecht terutama di rumah-rumah tua masih memiliki nilai tersebut karena memiliki desain arsitektur yang unik. 
 
 ## Data Preparation
-Sebelum membangun model prediksi, diperlukan beberapa tahap penting pada data preparation dengan melakukan transformasi pada data untuk memastikan bahwa data yang digunakan bersih, konsisten, dan dalam bentuk yang sudah sesuai  atau cocok untuk proses pemodelan machine learning. Ada beberapa tahapan yang umum dilakukan pada data preparation seperti seleksi fitur, transformasi data, feature engineering, dan dimensionality reduction. Pada bagian ini, yang akan dilakukan adalah pembagian dataset dengan fungsi train_test_split dari library sklearn. Membagi data menjadi data latih (train) dan data uji (test) merupakan suatu hal yang harus dilakukan sebelum membuat pemodelan di mana perlu mempertahankan sebagian data yang ada untuk menguji seberapa baik generalisasi model terhadap data baru. Data uji (test set) berperan sebagai data baru sehingga perlu melakukan seluruh proses transformasi dalam data latih supaya tidak mengotori data uji dengan informasi yang didapat dari data latih. Maka dari itu, langkah awal adalah membagi dataset sebelum melakukan transformasi apa pun. Proporsi pembagian data latih dan data uji yang akan digunakan pada proyek ini adalah 80:20. Hasil dari pembagian data latih dan data uji menunjukkan bahwa dari 1961 total jumlah sampel, akan diambil sebanyak 1568 untuk data latih dan sebanyak 393 untuk data uji. 
+Sebelum membangun model prediksi, diperlukan beberapa tahap penting pada data preparation dengan melakukan transformasi pada data untuk memastikan bahwa data yang digunakan bersih, konsisten, dan dalam bentuk yang sudah sesuai  atau cocok untuk proses pemodelan machine learning. Ada beberapa tahapan yang umum dilakukan pada data preparation seperti seleksi fitur, transformasi data, feature engineering, dan dimensionality reduction. Pada bagian ini, yang akan dilakukan adalah  penghapusan kolom 'id' dan 'zipcode', pemeriksaan missing value, penanganan outlier menggunakan metode IQR, seleksi fitur dengan menghapus 6 kolom selain kolom 'id' dan 'zipcode', pembagian dataset dengan fungsi train_test_split dari library sklearn, serta standarisasi. 
+
+Pada bagian awal proyek ini setelah data loading dan menampilkan tipe setiap kolom dataset, telah dilakukan penghapusan kolom variabel yang tidak relevan pada kolom 'id' dan 'zipcode' sebelum lanjut melakukan pemeriksaan deskripsi statistik dari dataset tersebut. 
+
+![image](https://github.com/user-attachments/assets/03f0986d-49f3-4603-9aec-02207d0b90df)
+
+Alasan dilakukan penghapusan itu karena kolom 'id' memiliki sifat unik untuk setiap baris dari dataset serta tidak memiliki informasi prediktif apa pun terhadap kolom 'retailvalue' sedangkan untuk kolom 'zipcode' sebenarnya dapat digunakan untuk mewakili lokasi terhadap prediksi harga rumah kolom 'retailvalue' tetapi kolom 'zipcode' pada dataset berbentuk angka mentah maka ketika melakukan modelling ditakutkan model salah menangkap hubungan linear padahal kolom tersebut hanya berupa kode lokasi. Sehingga, dari 16 kolom variabel, yang tersisa untuk analisis selanjutnya adalah hanya 14 kolom variabel. 
+
+![image](https://github.com/user-attachments/assets/8269d62b-1c2b-4364-9a8f-24c9c4b076d2)
+
+Setelah itu, dilakukan pemeriksaan missing value untuk kolom 'lot-len', 'lot-width', 'lot-area', 'house-area', 'garden-size', 'x-coor', 'y-coor', 'buildyear', 'bathrooms', 'taxvalue', dan 'retailvalue' yang merupakan 11 dari 14 kolom variabel. Untuk kolom 'balcony', 'energy-eff', dan 'monument' tidak dimasukkan dalam pemeriksaan outlier karena tidak semua rumah di Utrecht memiliki balkon, serta untuk kolom 'energy-eff' dan 'monument' tidak dimasukkan karena kedua kolom tersebut merupakan biner dengan hanya nilai 0 dan 1 di mana 0 menyatakan tidak dan 1 menyatakan iya. Setelah dilakukan pemeriksaan missing value, didapatkan bahwa seluruh kolom kecuali kolom yang dikecualikan tidak memiliki missing value sehingga tidak perlu melakukan penanganan untuk missing value. 
+
+![image](https://github.com/user-attachments/assets/10dbf64e-23ca-42c4-baa2-5aa34ae2e9c9)
+
+Selanjutnya, akan dilakukan pemeriksaan outlier pada kolom 'lot-len', 'lot-width', 'lot-area', 'house-area', 'garden-size', 'x-coor', 'y-coor', 'buildyear', 'taxvalue', dan 'retailvalue' menggunakan boxplot. Untuk kolom 'monument' dan 'energy-eff' tidak perlu diperiksa outliernya karena merupakan biner antara 0 dan 1 sedangkan untuk kolom 'balcony' dan 'bathrooms' tidak perlu juga untuk diperiksa outliernya karena merupakan bilangan diskrit antara 0 sampai dengan 2 serta antara 1 sampai dengan 3. Setelah dilakukan pemeriksaan, didapatkan bahwa kolom 'lot-area', 'garden-size', 'taxvalue', dan 'retailvalue' memiliki outlier sehingga akan dilakukan penanganan untuk outlier tersebut dengan menggunakan metode IQR. 
+
+![image](https://github.com/user-attachments/assets/dd9bab22-1272-4411-996d-135493a6207c)
+
+![image](https://github.com/user-attachments/assets/927a4727-0593-4046-ac7d-0ec75b3a2a68)
+
+![image](https://github.com/user-attachments/assets/cb2ba501-00e4-488d-960c-fa21a1f5df2d)
+
+![image](https://github.com/user-attachments/assets/c8e53e6d-d382-4174-836b-cd5ecba73ab5)
+
+IQR atau Inter Quartile Range dengan kuartil dari suatu populasi merupakan tiga nilai yang membagi distribusi data menjadi empat sebaran di mana seperempat dari data berada di bawah kuartil pertama (Q1), setengah dari data berada di bawah kuartil kedua (Q2), dan tiga perempat dari data berada di kuartil ketiga (Q3) sehingga IQR = Q3 - Q1. Metode IQR akan digunakan untuk mengidentifikasi outlier yang berada di luar Q1 dan Q3. Hal pertama yang perlu dilakukan adalah membuat batas bawah dan atas di mana untuk batas bawah dibuat dengan mengurangi Q1 dengan 1.5 * IQR (Q1 - 1.5 * IQR) lalu untuk batas atas dibuat dengan menambahkan 1.5 * IQR dengan Q3 (Q3 + 1.5 * IQR). 
+
+![image](https://github.com/user-attachments/assets/01514803-361c-4c6d-b885-c0072c993234)
+
+Setelah dilakukan penanganan outlier, didapatkan bahwa dataset bersih yang akan digunakan untuk keperluan analisis selanjutnya sebanyak 1961 sampel dari 2000 total data dengan 14 kolom variabel. 
+
+![image](https://github.com/user-attachments/assets/84fed977-4d34-46f0-83b1-414400a05e88)
+
+Selanjutnya, akan dilakukan pemeriksaan multivariate analysis untuk mengetahui hubungan antara dua atau lebih variabel numerik pada data yang mana berarti keseluruhan data menggunakan pairplot untuk seleksi fitur. 
+
+![image](https://github.com/user-attachments/assets/c8c5b262-cc17-4c06-8a59-3b4e82230067)
+
+Berdasarkan hasil pola sebaran data grafik dari pairplot di atas, didapatkan bahwa fitur 'taxvalue' memiliki korelasi tinggi terhadap fitur 'retailvalue' sedangkan fitur 'house-area' dan 'lot-area' memiliki korelasi sedang, serta fitur 'balcony', 'monument', 'energy-eff', 'bathrooms', dan 'buildyear' memiliki korelasi lemah karena sebarannya tidak membentuk pola sehingga akan dilakukan evaluasi skor korelasi dengan menggunakan heatmap corr. 
+
+![image](https://github.com/user-attachments/assets/1337ef5d-1ef0-45d7-babf-6a4854dcacd6)
+
+Berdasarkan heatmap korelasi yang tertera, didapatkan bahwa fitur 'house-area', 'taxvalue', dan 'lot-width' memiliki skor korelasi tinggi dengan di atas 0.7 terhadap fitur target 'retailvalue' yang mana berarti fitur 'retailvalue' memiliki korelasi tinggi dengan kedua fitur tersebut. Untuk fitur 'lot-area' memiliki korelasi sedang sedangkan untuk fitur 'lot-len', 'garden-size', 'balcony', 'x-coor', 'y-coor', 'buildyear', 'bathrooms', 'energy-eff', dan 'monument' memiliki korelasi yang sangat kecil bahkan terdapat fitur yang hampir tidak memiliki korelasi sehingga fitur tersebut akan didrop. Namun, walaupun terdapat beberapa fitur yang berkorelasi kecil maupun tidak berkorelasi tetapi karena masih masuk akal maka akan tetap dipertahankan untuk keperluan analisis selanjutnya. 
+
+![image](https://github.com/user-attachments/assets/e9844f3c-f8f6-4aba-88b2-2291bad92f45)
+
+Sehingga fitur yang tersisa hanya berupa 8 dari 14 kolom variabel untuk dilakukan train-test-split. 
+
+![image](https://github.com/user-attachments/assets/46a6ee61-af38-44d9-96c7-34bc761311d4)
+
+Selanjutnya, akan dilakukan pembagian dataset di mana membagi data menjadi data latih (train) dan data uji (test) merupakan suatu hal yang harus dilakukan sebelum membuat pemodelan di mana perlu mempertahankan sebagian data yang ada untuk menguji seberapa baik generalisasi model terhadap data baru. Data uji (test set) berperan sebagai data baru sehingga perlu melakukan seluruh proses transformasi dalam data latih supaya tidak mengotori data uji dengan informasi yang didapat dari data latih. Maka dari itu, langkah awal adalah membagi dataset sebelum melakukan transformasi apa pun. Proporsi pembagian data latih dan data uji yang akan digunakan pada proyek ini adalah 80:20. Hasil dari pembagian data latih dan data uji menunjukkan bahwa dari 1961 total jumlah sampel, akan diambil sebanyak 1568 untuk data latih dan sebanyak 393 untuk data uji. 
 
 ![image](https://github.com/user-attachments/assets/d935dc62-7739-442e-8d9a-85926f8e41ed)
 
-Selanjutnya untuk standarisasi, algoritma machine learning memiliki performa yang lebih baik dan konvergen lebih cepat ketika dimodelkan pada data dengan skala relatif sama atau mendekati distribusi normal, sehingga proses standarisasi membantu untuk membuat fitur data menjadi bentuk yang lebih mudah untuk diolah oleh algoritma. Standarisasi adalah teknik transformasi yang paling umum digunakan sebagai tahap persiapan dalam pemodelan. Untuk fitur numerik, akan menggunakan teknik StandardScaler dari library Scikitlearn di mana akan melakukan proses standarisasi fitur dengan mengurangi mean (nilai rata-rata) kemudian membaginya dengan standar deviasi untuk menggeser distribusi sehingga akan menghasilkan distribusi dengan standar deviasi sama dengan 1 dan mean sama dengan 0. Standarisasi hanya akan dilakukan pada data latih lalu ketika sudah berada di tahap evaluasi baru akan dilakukan juga dengan data uji. Setelah dilakukan standarisasi, dapat terlihat bahwa nilai mean sudah = 0 dan standar deviasi = 1. 
+Terakhir untuk standarisasi, algoritma machine learning memiliki performa yang lebih baik dan konvergen lebih cepat ketika dimodelkan pada data dengan skala relatif sama atau mendekati distribusi normal, sehingga proses standarisasi membantu untuk membuat fitur data menjadi bentuk yang lebih mudah untuk diolah oleh algoritma. Standarisasi adalah teknik transformasi yang paling umum digunakan sebagai tahap persiapan dalam pemodelan. Untuk fitur numerik, akan menggunakan teknik StandardScaler dari library Scikitlearn di mana akan melakukan proses standarisasi fitur dengan mengurangi mean (nilai rata-rata) kemudian membaginya dengan standar deviasi untuk menggeser distribusi sehingga akan menghasilkan distribusi dengan standar deviasi sama dengan 1 dan mean sama dengan 0. Standarisasi hanya akan dilakukan pada data latih lalu ketika sudah berada di tahap evaluasi baru akan dilakukan juga dengan data uji. Setelah dilakukan standarisasi, dapat terlihat bahwa nilai mean sudah = 0 dan standar deviasi = 1. 
 
 ![image](https://github.com/user-attachments/assets/7f876d43-7370-4eb7-a96a-ee787ef68f99)
 
